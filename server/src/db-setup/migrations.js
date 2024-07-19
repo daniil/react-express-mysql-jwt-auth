@@ -4,7 +4,7 @@ if (!command) {
   process.exit(0);
 }
 
-import db from "../db/connection.js";
+import db from '../db/connection.js';
 
 // Migration up
 if (command === 'up') {
@@ -45,8 +45,13 @@ if (command === 'up') {
 
 // Migration down
 if (command === 'down') {
-  await db.query(`DROP TABLE messages;`);
-  await db.query(`DROP TABLE users;`)
+  try {
+    await db.query(`DROP TABLE messages;`);
+    await db.query(`DROP TABLE users;`)
+  } catch(err) {
+    console.log(err);
+    process.exit(1);
+  }
 
   console.log('✅ Migration down was successful');
   process.exit();
